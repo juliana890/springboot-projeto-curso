@@ -1,6 +1,5 @@
 package com.aulaspring.SB_projetocurso.resources.exceptions;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
