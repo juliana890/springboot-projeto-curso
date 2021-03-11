@@ -11,6 +11,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.aulaspring.SB_projetocurso.domain.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) //Mapear a classe de herança
@@ -23,6 +24,7 @@ public abstract class Pagamento implements Serializable {
 	private Integer estado;
 	
 	//Mapeamos o id para termos o mesmo id do Pedido
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "pedido_id")
 	@MapsId
