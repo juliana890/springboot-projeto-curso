@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.aulaspring.SB_projetocurso.domain.Categoria;
 import com.aulaspring.SB_projetocurso.repositories.CategoriaRepository;
-
 import com.aulaspring.SB_projetocurso.services.exceptions.ObjectNotFoundException;
 
 @Service
@@ -32,6 +31,11 @@ public class CategoriaService {
 	
 	public Categoria insert(Categoria obj) {
 		obj.setId(null);
+		return repo.save(obj);
+	}
+	
+	public Categoria update(Categoria obj) {
+		findById(obj.getId());
 		return repo.save(obj);
 	}
 	
