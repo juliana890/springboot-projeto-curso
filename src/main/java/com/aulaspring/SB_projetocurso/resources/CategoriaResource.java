@@ -2,6 +2,7 @@ package com.aulaspring.SB_projetocurso.resources;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.aulaspring.SB_projetocurso.domain.Categoria;
+import com.aulaspring.SB_projetocurso.dto.CategoriaDTO;
 import com.aulaspring.SB_projetocurso.services.CategoriaService;
 
 @RestController
@@ -26,10 +28,11 @@ public class CategoriaResource {
 	private CategoriaService service;
 	
 	@GetMapping
-	public ResponseEntity<List<Categoria>> findAll() {
+	public ResponseEntity<List<CategoriaDTO>> findAll() {
 		List<Categoria> lista = service.findAll();
+		List<CategoriaDTO> listDto = lista.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
 		
-		return ResponseEntity.ok().body(lista);
+		return ResponseEntity.ok().body(listDto);
 	}
 	
 	@GetMapping(value = "/{id}")
