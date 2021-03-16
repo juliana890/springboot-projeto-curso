@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -45,7 +47,8 @@ public class CategoriaResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Void> insert(@RequestBody Categoria obj){
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto){
+		Categoria obj = service.fromDTO(objDto);
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		
@@ -53,7 +56,8 @@ public class CategoriaResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id){
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDto, @PathVariable Integer id){
+		Categoria obj = service.fromDTO(objDto);
 		obj.setId(id);
 		obj = service.update(obj);
 		
@@ -75,6 +79,7 @@ public class CategoriaResource {
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage, //Colocamos o defaultValue = "24" pq 24 é multiplo de 1, 2, 3 e 4 facilitando na implementação 
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy, // Colocamos defaultValue = "nome" informando o campo que queremos ordenar
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
+		
 		Page<Categoria> lista = service.findPage(page, linesPerPage, orderBy, direction);
 		Page<CategoriaDTO> listDto = lista.map(obj -> new CategoriaDTO(obj));
 		
