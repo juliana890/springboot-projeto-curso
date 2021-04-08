@@ -12,9 +12,12 @@ import javax.persistence.OneToOne;
 
 import com.aulaspring.SB_projetocurso.domain.enums.EstadoPagamento;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED) //Mapear a classe de herança
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type") //Notação para informar que a classe pagamento terá um campo adicional typo onde tipo do pagamento será passado
 public abstract class Pagamento implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

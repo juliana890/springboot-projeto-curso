@@ -6,8 +6,10 @@ import javax.persistence.Entity;
 
 import com.aulaspring.SB_projetocurso.domain.enums.EstadoPagamento;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @Entity
+@JsonTypeName("pagamentoComBoleto") //Utilizamos para informar o nome do parâmetro que será instânciado
 public class PagamentoComBoleto extends Pagamento {
 
 	private static final long serialVersionUID = 1L;

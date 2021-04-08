@@ -3,8 +3,10 @@ package com.aulaspring.SB_projetocurso.domain;
 import javax.persistence.Entity;
 
 import com.aulaspring.SB_projetocurso.domain.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @Entity
+@JsonTypeName("pagamentoComCartao")
 public class PagamentoComCartao extends Pagamento {
 
 	private static final long serialVersionUID = 1L;
