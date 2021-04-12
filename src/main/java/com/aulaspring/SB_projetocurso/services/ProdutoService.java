@@ -24,12 +24,6 @@ public class ProdutoService {
 	@Autowired
 	private CategoriaRepository categoriaRepository;
 	
-//	public List<Produto> findAll(){
-//		List<Produto> lista = repo.findAll();
-//		
-//		return lista;
-//	}
-	
 	public Produto findById(Integer id){
 		Optional<Produto> obj = repo.findById(id);
 		

@@ -15,7 +15,6 @@ import com.aulaspring.SB_projetocurso.domain.enums.EstadoPagamento;
 import com.aulaspring.SB_projetocurso.repositories.ItemPedidoRepository;
 import com.aulaspring.SB_projetocurso.repositories.PagamentoRepository;
 import com.aulaspring.SB_projetocurso.repositories.PedidoRepository;
-import com.aulaspring.SB_projetocurso.repositories.ProdutoRepository;
 import com.aulaspring.SB_projetocurso.services.exceptions.ObjectNotFoundException;
 
 @Service
