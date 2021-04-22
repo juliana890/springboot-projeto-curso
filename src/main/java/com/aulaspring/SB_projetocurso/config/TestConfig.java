@@ -27,7 +27,7 @@ public class TestConfig {
 		return true;
 	}
 	
-	//Criamos a instância de EmailService que é uma interface, retornando um MockEmailService que realiza o envio de email
+	//Criamos a instância de EmailService que é uma interface, retornando um MockEmailService que realiza o envio de email de teste no LOG
 	//Quando utilizamos a notação @Bean o método fica disponível como componente no sistema, ou seja o Spring busca a notation para realizar a instância
 	@Bean
 	public EmailService emailService() {

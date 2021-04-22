@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import com.aulaspring.SB_projetocurso.services.DBService;
+import com.aulaspring.SB_projetocurso.services.EmailService;
+import com.aulaspring.SB_projetocurso.services.SmtpEmailService;
 
 //#Para alterar a porta da aplicação manualmente server.port=${port:8081}
 
@@ -33,5 +35,12 @@ public class DevConfig {
 		dbService.instantiateTestDatabase();
 		
 		return true;
+	}
+	
+	//Criamos a instância de EmailService que é uma interface, retornando um MockEmailService que realiza o envio de email de verdade
+	//Quando utilizamos a notação @Bean o método fica disponível como componente no sistema, ou seja o Spring busca a notation para realizar a instância
+	@Bean
+	public EmailService emailService() {
+		return new SmtpEmailService();
 	}
 }
