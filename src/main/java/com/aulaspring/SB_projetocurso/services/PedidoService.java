@@ -38,6 +38,10 @@ public class PedidoService {
 	@Autowired
 	private ClienteService clienteService;
 	
+	//Criamos uma instância do EmailService para realizar o "envio" do email
+	@Autowired
+	private EmailService emailService;
+	
 	public List<Pedido> findAll(){
 		List<Pedido> lista = repo.findAll();
 		
@@ -79,7 +83,8 @@ public class PedidoService {
 		//Salvamos os itens no banco de dados
 		itemPedidoRepository.saveAll(obj.getItems());
 		
-		System.out.println(obj);
+		//Enviando o email
+		emailService.sendOrderConfirmationEmail(obj);
 		
 		return obj;
 		
