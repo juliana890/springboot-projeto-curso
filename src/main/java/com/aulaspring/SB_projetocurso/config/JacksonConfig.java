@@ -3,6 +3,8 @@ package com.aulaspring.SB_projetocurso.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import com.aulaspring.SB_projetocurso.domain.PagamentoComBoleto;
 import com.aulaspring.SB_projetocurso.domain.PagamentoComCartao;
@@ -21,5 +23,11 @@ public class JacksonConfig {
 			}
 		};
 		return builder;
+	}
+	
+	//Para corrigir o problema no perfil test
+	@Bean
+	public JavaMailSender jMS() {
+		return new JavaMailSenderImpl();
 	}
 }
