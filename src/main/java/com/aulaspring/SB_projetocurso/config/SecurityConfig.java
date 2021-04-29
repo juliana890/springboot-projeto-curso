@@ -7,21 +7,33 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import com.aulaspring.SB_projetocurso.security.JWTAuthenticationFilter;
+import com.aulaspring.SB_projetocurso.security.JWTUtil;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
+	//Criamos a instância da interface pq o Spring busca quem está implementando para criar a instância da impl
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
 	@Autowired
 	private Environment env;
+	
+	@Autowired
+	private JWTUtil jwtUtil;
 
 	//Liberamos somente o h2
 	private static final String[] PUBLIC_MATCHERS = {
@@ -50,8 +62,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		//antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET permitimos apenas o método GET
 		http.authorizeRequests().antMatchers(PUBLIC_MATCHERS).permitAll().antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll().anyRequest().authenticated();
 		
+		//Adicionamos o filtro criado na classe JWTAuthenticationFilter
+		//Passamos o authenticationManager() que já pertence a classe WebSecurityConfigurerAdapter e o nosso JWTutil
+		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		
 		//Para assegurar que o back-end não irá criar seção de usuário
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+	}
+	
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
 	}
 	
 	//Definindo acesso básico de multiplas fontes para todos os caminhos
