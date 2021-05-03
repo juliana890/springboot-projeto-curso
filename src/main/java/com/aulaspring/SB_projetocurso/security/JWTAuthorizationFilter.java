@@ -38,7 +38,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter{
 		if(header != null && header.startsWith("Bearer ")) {
 			//Passamos o valor do token para o objeto UsernamePasswordAuthenticationToken que é do Spring Security
 			//E pegamos o valor do token com o substring
-			UsernamePasswordAuthenticationToken auth = getAuthentication(request, header.substring(7));
+			UsernamePasswordAuthenticationToken auth = getAuthentication(header.substring(7));
 			
 			if(auth != null) {
 				SecurityContextHolder.getContext().setAuthentication(auth);
@@ -50,7 +50,7 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter{
 	}
 
 	//Método que irá gerar um objeto UsernamePasswordAuthenticationToken a partir do token que veio como parâmetro da requisição
-	private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request, String token) {
+	private UsernamePasswordAuthenticationToken getAuthentication(String token) {
 		if(jwtUtil.tokenValido(token)) {
 			//Pegando o username dentro do token
 			String username = jwtUtil.getUsername(token);
