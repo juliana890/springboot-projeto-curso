@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -29,5 +30,48 @@ public class JWTUtil {
 				.setExpiration(new Date(System.currentTimeMillis() + expiration))
 				.signWith(SignatureAlgorithm.HS512, secret.getBytes())
 				.compact();
+	}
+	
+	//Testando se um token é válido
+	public boolean tokenValido(String token) {
+		//Claims é um tipo no JWT que armazena as reinvidicações do token
+		Claims claims = getClaims(token);
+		
+		if(claims != null) {
+			//Pegamos o usuário
+			String username = claims.getSubject();
+			
+			//Pegamos a data de expiraração do token e a data atual para testarmos se o token já está expirado
+			Date expirationDate = claims.getExpiration();
+			Date now = new Date(System.currentTimeMillis());
+			
+			//Se token for válido
+			if(username != null && expirationDate != null && now.before(expirationDate)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public String getUsername(String token) {
+		Claims claims = getClaims(token);
+		
+		if(claims != null) {
+			return claims.getSubject();
+		}
+		
+		return null;
+	}
+	
+	//Para obter os Claims a partir do token
+	private Claims getClaims(String token) {
+		try {
+			return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody();
+		}
+		catch(Exception e) {
+			return null;
+		}
+		
 	}
 }
