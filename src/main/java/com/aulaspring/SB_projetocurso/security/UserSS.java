@@ -73,4 +73,11 @@ public class UserSS implements UserDetails {
 		return true;
 	}
 
+	//Testamos o papel do admin
+	public boolean hasRole(Perfil perfil) {
+		//Precisamos acessar a lista de authorities
+		//Depois precisamos converter o Perfil para GrantedAuthority
+		//Passamos o perfil em forma de String
+		return getAuthorities().contains(new SimpleGrantedAuthority(perfil.getDescricao()));
+	}
 }

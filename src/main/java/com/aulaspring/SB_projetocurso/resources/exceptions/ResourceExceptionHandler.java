@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.aulaspring.SB_projetocurso.services.exceptions.AuthorizationException;
 import com.aulaspring.SB_projetocurso.services.exceptions.DataIntegrityException;
 import com.aulaspring.SB_projetocurso.services.exceptions.ObjectNotFoundException;
 
@@ -43,6 +44,15 @@ public class ResourceExceptionHandler {
 		for(FieldError x : e.getBindingResult().getFieldErrors()) {
 			err.addError(x.getField(), x.getDefaultMessage());
 		}
+		
+		return ResponseEntity.status(status).body(err);
+	}
+	
+	@ExceptionHandler(AuthorizationException.class) //Tratador de exceções do tipo ObjectNotFoundException
+	public ResponseEntity<StandardError> authorization(AuthorizationException e, HttpServletRequest request){
+		HttpStatus status = HttpStatus.FORBIDDEN; //Error 404
+		
+		StandardError err = new StandardError(status.value(), e.getMessage(), System.currentTimeMillis());
 		
 		return ResponseEntity.status(status).body(err);
 	}

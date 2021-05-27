@@ -14,11 +14,14 @@ import org.springframework.stereotype.Service;
 import com.aulaspring.SB_projetocurso.domain.Cidade;
 import com.aulaspring.SB_projetocurso.domain.Cliente;
 import com.aulaspring.SB_projetocurso.domain.Endereco;
+import com.aulaspring.SB_projetocurso.domain.enums.Perfil;
 import com.aulaspring.SB_projetocurso.domain.enums.TipoCliente;
 import com.aulaspring.SB_projetocurso.dto.ClienteDTO;
 import com.aulaspring.SB_projetocurso.dto.ClienteNewDTO;
 import com.aulaspring.SB_projetocurso.repositories.ClienteRepository;
 import com.aulaspring.SB_projetocurso.repositories.EnderecoRepository;
+import com.aulaspring.SB_projetocurso.security.UserSS;
+import com.aulaspring.SB_projetocurso.services.exceptions.AuthorizationException;
 import com.aulaspring.SB_projetocurso.services.exceptions.DataIntegrityException;
 import com.aulaspring.SB_projetocurso.services.exceptions.ObjectNotFoundException;
 
@@ -42,6 +45,15 @@ public class ClienteService {
 	}
 	
 	public Cliente findById(Integer id) {
+		
+		//Pegando o usuário logado
+		UserSS user = UserService.authenticated();
+		
+		//Verificamos se o usuário não está nulo e se ele não possui papel ADMIN e se o id é diferente do usuário logado
+		if(user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+		
 		Optional<Cliente> obj = repo.findById(id);
 		
 		return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não encontrado! Id: " + id + ". Tipo: " + Cliente.class.getName()));
