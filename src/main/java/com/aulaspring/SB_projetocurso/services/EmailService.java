@@ -4,6 +4,7 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.mail.SimpleMailMessage;
 
+import com.aulaspring.SB_projetocurso.domain.Cliente;
 import com.aulaspring.SB_projetocurso.domain.Pedido;
 
 //Interface de serviço de email, operações que o serviço irá oferecer
@@ -18,4 +19,6 @@ public interface EmailService {
 	
 	//Passamos o objeto MimeMessage para realizar o envio de email com o template HTML
 	void sendHtmlEmail(MimeMessage msg);
+	
+	void sendNewPasswordEmail(Cliente cliente, String newPass);
 }
