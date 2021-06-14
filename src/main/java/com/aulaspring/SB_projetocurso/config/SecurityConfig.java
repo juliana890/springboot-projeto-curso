@@ -50,10 +50,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	};
 	
 	//Liberamos os caminhos somente para cadastro
-		private static final String[] PUBLIC_MATCHERS_POST = {
-				"/clientes/**",
-				"/auth/forgot/**"
-		};
+	private static final String[] PUBLIC_MATCHERS_POST = {
+			"/clientes/**",
+			"/clientes/picture",
+			"/auth/forgot/**"
+	};
 	
 	//Sobrescrevendo o método do WebSecurityConfigurerAdapter
 	@Override

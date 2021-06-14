@@ -1,5 +1,6 @@
 package com.aulaspring.SB_projetocurso.services;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.aulaspring.SB_projetocurso.domain.Cidade;
 import com.aulaspring.SB_projetocurso.domain.Cliente;
@@ -37,6 +39,9 @@ public class ClienteService {
 	
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	private S3Service s3Service;
 	
 	public List<Cliente> findAll(){
 		List<Cliente> lista = repo.findAll();
@@ -112,6 +117,11 @@ public class ClienteService {
 	private void updateData(Cliente obj, Cliente newObj) {
 		newObj.setNome(obj.getNome());
 		newObj.setEmail(obj.getEmail());
+	}
+	
+	//Método que irá repassar a chamada para o S3Service
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
+		return s3Service.uploadFile(multipartFile);
 	}
 
 }

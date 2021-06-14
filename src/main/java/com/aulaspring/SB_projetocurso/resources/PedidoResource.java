@@ -1,7 +1,6 @@
 package com.aulaspring.SB_projetocurso.resources;
 
 import java.net.URI;
-import java.util.List;
 
 import javax.validation.Valid;
 
